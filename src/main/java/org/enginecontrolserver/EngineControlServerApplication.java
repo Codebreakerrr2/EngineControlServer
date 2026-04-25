@@ -1,4 +1,4 @@
-package org.example.enginecontrolserver;
+package org.enginecontrolserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

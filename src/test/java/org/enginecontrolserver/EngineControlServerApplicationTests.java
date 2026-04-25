@@ -1,4 +1,4 @@
-package org.example.enginecontrolserver;
+package org.enginecontrolserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
