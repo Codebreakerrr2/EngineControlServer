@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user/entity")
+@RequestMapping("/entity")
 public class EntityController {
 
     private final EngineClient engineClient;
