@@ -18,5 +18,10 @@ public class EngineHandler {
     public void recieveEntity(@RequestBody EntityDTO entityDTO) {
         entityService.createEntity(entityDTO);
     }
+    @PostMapping("/updateEntity")
+    public void updateEntity(@RequestBody EntityDTO entityDTO) {
+
+    }
+
 
 }
