@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Engine Log Viewer</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
+    <style>
+        body {
+            background: #0f1117;
+            color: #e6e6e6;
+            font-family: Arial;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #58a6ff;
+        }
+
+        #logs {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .log {
+            padding: 10px;
+            border-radius: 6px;
+            background: #161b22;
+            border-left: 4px solid gray;
+        }
+
+        .INFO { border-color: #2ea043; }
+        .DEBUG { border-color: #8b949e; }
+        .ERROR { border-color: #f85149; }
+
+        .meta {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🔥 Engine Log Viewer</h1>
+<div id="status">Connecting...</div>
+
+<div id="logs"></div>
+
+<script>
+    const socket = new SockJS("http://localhost:8080/ws-engine");
+    const client = Stomp.over(socket);
+
+    const logsDiv = document.getElementById("logs");
+    const statusDiv = document.getElementById("status");
+
+    client.connect({}, function () {
+        statusDiv.innerText = "Connected ✅";
+
+        client.subscribe("/topic/log", function (msg) {
+            const log = JSON.parse(msg.body);
+
+            const div = document.createElement("div");
+            div.classList.add("log");
+            div.classList.add(log.level || "INFO");
+
+            div.innerHTML = `
+                <div><b>${log.level}</b> - ${log.message}</div>
+                <div class="meta">${log.timestamp || ""} | ${log.source || ""}</div>
+            `;
+
+            logsDiv.appendChild(div);
+
+            // auto scroll
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    });
+</script>
+
+</body>
+</html>
